@@ -21,7 +21,7 @@ def parse_args():
     return args
 
 
-def output_list(masterList):
+def output_list(masterlist):
     """
     Helper function that removes the extra brackets when outputting a list of lists into a csv file.
     Stackoverflow link: https://stackoverflow.com/questions/31587784/python-list-write-to-csv-without-the-square-brackets
@@ -34,7 +34,7 @@ def output_list(masterList):
     """
     #
     output = []
-    for item in masterList:
+    for item in masterlist:
 
         # check if item is a list
         if isinstance(item, list):
@@ -52,8 +52,15 @@ def output_list(masterList):
 
 
 def count_the_months(another_list):
-    """ Helper function designed to count the number of months"""
+    """ Helper function designed to count the number of months.
 
+    Keywords:
+    (list) another_list: input list of all the dates (some are repeating)
+
+    Returns: length of set of dates
+    """
+
+    # Create a dates set
     dates_set = set()
 
     for row in another_list:
@@ -63,25 +70,15 @@ def count_the_months(another_list):
     return len(dates_set)
 
 
-def do_a_avg_check(another_list):
-    """ Helper function for the average crossing list"""
-
-    for i in range(len(another_list)):
-        row = another_list[i]
-    # for row in another_list:
-        if row[3] == row[4]:
-            row[4] = 0
-
-    return another_list
-
-
-def check_all_there(theList):
+def check_all_there(the_list):
     """ Helper function to make sure all is there"""
-    for row in theList:
+    for row in the_list:
         for i in range(len(row)):
-            if row:
+            if not row[i]:
                 raise ValueError('Ehh, empty list, sir!')
-            else: return True
+            else:
+                return True
+
 
 def main():
     """ Main function that takes in the input file of border crossing entry data and returns the statistics. """
@@ -103,6 +100,7 @@ def main():
         # Sort the list by Border, Date, and Measure in descending order
         sorted_list = sorted(csv_reader, key=itemgetter(3, 5))
 
+        # Make sure the sorted_list rows are not empty
         if check_all_there(sorted_list):
             pass
 
@@ -122,7 +120,7 @@ def main():
         # (constructed so that we are adding in the top down direction and bottom up)
         for i in range(len(list_with_agg_values)-1, 0, -1):
             each_row = list_with_agg_values[i]
-            # Every x number of months we switch measures so restart the acculumator and counter
+            # Every x number of months we switch measures so restart the accumulator and counter
             if i % (num_of_months-1) == 0:
                 accumulation, counter = 0, 0
 
@@ -143,7 +141,6 @@ def main():
         final_sorted_list = sorted(sorted_list_with_val_border_measure,
                                    key=lambda x: datetime.strptime(x[1], '%d/%m/%Y %H:%M:%S %p'), reverse=True)
 
-        final_list_check = do_a_avg_check(final_sorted_list)
     # Write out to the output csv file
     with open(args.output, mode='w') as csv_outfile:
         outfile_writer = csv.writer(csv_outfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -152,8 +149,7 @@ def main():
         outfile_writer.writerow(['Border,Date,Measure,Value,Average'])
 
         # for each row in the final list, remove the list of list and create one list
-        for row in final_list_check:
-        # for row in final_sorted_list:
+        for row in final_sorted_list:
             outfile_writer.writerow(output_list(row))
 
 
