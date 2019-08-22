@@ -5,7 +5,7 @@
 1. [Language and Libraries Used](README.md#language-and-libraries-used)
 1. [How I solved this problem](README.md#how-i-solved-this-problem)
 1. [Pros and Cons](README.md#pros-and-cons)
-1. [How to run my Work?](README.md#how-to-run-my-work?)
+1. [How to run my Work?](README.md#how-to-run-my-work)
 1. [References](README.md#references)
 
 ## Problem
@@ -26,6 +26,8 @@ datetime
 
 itertools
 
+math
+
 ## How I solved this problem
 To solve this problem, I first read in the data as a ordered_dictionary and tried iterating through the csv file to seperate out the Border names, the dates, and the measures. Once then, I would try to establish a link betweeen the Border names, dates, and the measures via implementing several dictionary. Dictionaries are extremely useful because when looking up something inside a dictionary the time complexity is O(1). However, this did not work because iteravely updating a dictionary was tricky and it proved to be hard. 
 
@@ -34,8 +36,6 @@ Next I tried implementing a stack to keep track of the valves for each border, d
 Hence, I arrived at my solution. I read in the csv file, and I sorted it (in a descending order) via Border, Date, and Measure and then I grouped the sorted list via these same 3 cateogories, so there would be a solid chunk of the same cateogies, but different values. This was essential because now all I had to do was aggregate these values and then calculate the average for each crossing!
 
 Fun things I learned: iterating over Lists of Lists is (slightly) faster than iterating over a list of OrderedDictionaries! Itemgetter is faster than using a lambda function.
-
-Completely misread that the average was supposed to be for the column before not after. Tried to fix this, but I didn't have enough time.
 
 
 ### Pros and Cons
@@ -96,3 +96,5 @@ Last, but not least, are the references whose helpful and thoughtful resources I
 [compute mean in python for a generator](https://stackoverflow.com/questions/4963784/compute-mean-in-python-for-a-generator)
 
 [Python - Itemgetter on Dates](https://stackoverflow.com/questions/21634678/python-itemgetter-on-dates)
+
+[Python3: test if all values of a dictionary are equal - when value is unknown](https://stackoverflow.com/questions/45020701/python3-test-if-all-values-of-a-dictionary-are-equal-when-value-is-unknown?rq=1)
