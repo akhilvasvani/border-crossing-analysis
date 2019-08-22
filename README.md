@@ -37,6 +37,8 @@ Hence, I arrived at my solution. I read in the csv file, and I sorted it (in a d
 
 Fun things I learned: iterating over Lists of Lists is (slightly) faster than iterating over a list of OrderedDictionaries! Itemgetter is faster than using a lambda function.
 
+Moved all the helper function to the utils.py file in order to make things for clear and legible. 
+
 
 ### Pros and Cons
 
@@ -58,6 +60,8 @@ this will work: ```python3 src/border_crossing_statistics.py --input input/Borde
 This will not work: ```python3 ./src/border_analytics.py ./input/Border_Crossing_Entry_data.csv ./output/report.csv```
 
 I did this because there is now a clear distinction between input and output.
+
+Added in my own unit test cases to help debug and ran the test case provided!
 
 ## References
 
@@ -98,3 +102,5 @@ Last, but not least, are the references whose helpful and thoughtful resources I
 [Python - Itemgetter on Dates](https://stackoverflow.com/questions/21634678/python-itemgetter-on-dates)
 
 [Python3: test if all values of a dictionary are equal - when value is unknown](https://stackoverflow.com/questions/45020701/python3-test-if-all-values-of-a-dictionary-are-equal-when-value-is-unknown?rq=1)
+
+[Using python csv writer without quotations](https://stackoverflow.com/questions/23882024/using-python-csv-writer-without-quotations)
