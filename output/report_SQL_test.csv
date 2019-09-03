@@ -1,0 +1,34 @@
+Border,Date,Measure,Value,Average
+US-Canada Border,03/01/2019 00:00:00 AM,Trucks,24938,4289
+US-Canada Border,03/01/2019 00:00:00 AM,Personal Vehicle Passengers,16377,4464
+US-Canada Border,03/01/2019 00:00:00 AM,Rail Containers Empty,6685,3
+US-Mexico Border,03/01/2019 00:00:00 AM,Truck Containers Empty,1808,0
+US-Canada Border,03/01/2019 00:00:00 AM,Bus Passengers,1054,30
+US-Canada Border,03/01/2019 00:00:00 AM,Personal Vehicles,235,50407
+US-Mexico Border,03/01/2019 00:00:00 AM,Trains,62,19
+US-Canada Border,01/01/2007 00:00:00 AM,Personal Vehicles,88540,12274
+US-Canada Border,01/01/2007 00:00:00 AM,Personal Vehicle Passengers,4464,0
+US-Canada Border,01/01/2007 00:00:00 AM,Trucks,1798,6780
+US-Canada Border,01/01/2007 00:00:00 AM,Truck Containers Empty,1049,629
+US-Canada Border,01/01/2007 00:00:00 AM,Train Passengers,330,372
+US-Mexico Border,01/01/2007 00:00:00 AM,Train Passengers,127,0
+US-Canada Border,01/01/2007 00:00:00 AM,Bus Passengers,57,3
+US-Canada Border,01/01/2007 00:00:00 AM,Pedestrians,52,0
+US-Mexico Border,01/01/2007 00:00:00 AM,Trains,37,0
+US-Canada Border,01/01/2007 00:00:00 AM,Buses,7,1452
+US-Canada Border,01/01/2007 00:00:00 AM,Rail Containers Empty,6,0
+US-Canada Border,01/01/2007 00:00:00 AM,Trains,0,247
+US-Mexico Border,07/01/2002 00:00:00 AM,Personal Vehicles,350260,0
+US-Canada Border,07/01/2002 00:00:00 AM,Personal Vehicles,12274,0
+US-Canada Border,07/01/2002 00:00:00 AM,Trucks,6780,0
+US-Canada Border,07/01/2002 00:00:00 AM,Buses,1452,0
+US-Canada Border,07/01/2002 00:00:00 AM,Truck Containers Full,1237,0
+US-Canada Border,07/01/2002 00:00:00 AM,Truck Containers Empty,629,0
+US-Canada Border,07/01/2002 00:00:00 AM,Train Passengers,372,0
+US-Canada Border,07/01/2002 00:00:00 AM,Trains,247,0
+US-Canada Border,07/01/2002 00:00:00 AM,Bus Passengers,3,0
+US-Canada Border,07/01/2002 00:00:00 AM,Rail Containers Empty,0,0
+US-Canada Border,07/01/2002 00:00:00 AM,Pedestrians,0,0
+US-Mexico Border,07/01/2002 00:00:00 AM,Truck Containers Full,0,0
+US-Mexico Border,07/01/2002 00:00:00 AM,Trains,0,0
+US-Mexico Border,07/01/2002 00:00:00 AM,Rail Containers Empty,0,0

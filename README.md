@@ -28,12 +28,14 @@ itertools
 
 math
 
+In addition, I made another file using SQL commands (using SQLite) to show my flexibility.
+
 ## How I solved this problem
-To solve this problem, I first read in the data as a ordered_dictionary and tried iterating through the csv file to seperate out the Border names, the dates, and the measures. Once then, I would try to establish a link betweeen the Border names, dates, and the measures via implementing several dictionary. Dictionaries are extremely useful because when looking up something inside a dictionary the time complexity is O(1). However, this did not work because iteravely updating a dictionary was tricky and it proved to be hard. 
+To solve this problem, I first read in the data as a ordered_dictionary and tried iterating through the csv file to separate out the Border names, the dates, and the measures. Once then, I would try to establish a link betweeen the Border names, dates, and the measures via implementing several dictionary. Dictionaries are extremely useful because when looking up something inside a dictionary the time complexity is O(1). However, this did not work because iteravely updating a dictionary was tricky and it proved to be hard.
 
 Next I tried implementing a stack to keep track of the valves for each border, date, and measure, but once again I ran into the issue of how to know when to update the stack if I changed either of those three cateogories. In addition, I would have to make 6000+ different stacks if I implemented this structure (for each border, date, and measure). This did not lead anywhere. 
 
-Hence, I arrived at my solution. I read in the csv file, and I sorted it (in a descending order) via Border, Date, and Measure and then I grouped the sorted list via these same 3 cateogories, so there would be a solid chunk of the same cateogies, but different values. This was essential because now all I had to do was aggregate these values and then calculate the average for each crossing!
+Hence, I arrived at my solution. I read in the csv file, and I sorted it (in a descending order) via Border, Date, and Measure and then I grouped the sorted list via these same 3 categories, so there would be a solid chunk of the same cateogies, but different values. This was essential because now all I had to do was aggregate these values and then calculate the average for each crossing!
 
 Fun things I learned: iterating over Lists of Lists is (slightly) faster than iterating over a list of OrderedDictionaries! Itemgetter is faster than using a lambda function.
 
@@ -42,7 +44,7 @@ Moved all the helper function to the utils.py file in order to make things for c
 
 ### Pros and Cons
 
-Pros of my methodolgy:
+Pros of my methodology:
 * Easy code to read, nothing very messy or hard to understand
 * If instead of aggregating the valves of the crossings and you wanted to aggregate via the date, it's easy to implement and not much to change
 
@@ -66,6 +68,8 @@ Added in my own unit test cases to help debug and ran the test case provided!
 ## References
 
 Last, but not least, are the references whose helpful and thoughtful resources I read to help me solve this problem. While I did not use all of them, some were essential. Without them, I would not have been able to get this far so without further ado: 
+
+### Python Links
 
 [Reading and Writing CSV Files in Python](https://realpython.com/python-csv/)
 
@@ -104,3 +108,17 @@ Last, but not least, are the references whose helpful and thoughtful resources I
 [Python3: test if all values of a dictionary are equal - when value is unknown](https://stackoverflow.com/questions/45020701/python3-test-if-all-values-of-a-dictionary-are-equal-when-value-is-unknown?rq=1)
 
 [Using python csv writer without quotations](https://stackoverflow.com/questions/23882024/using-python-csv-writer-without-quotations)
+
+### SQL Links
+
+[CAST and CONVERT (Transact-SQL)](https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-2017)
+
+[Calculate a Running Monthly Average in SQL Server](https://stackoverflow.com/questions/42034434/calculate-a-running-monthly-average-in-sql-server)
+
+[SQL Server Rolling Average](https://www.periscopedata.com/blog/rolling-average)
+
+[Calculating Running Total in SQL](http://www.silota.com/docs/recipes/sql-running-total.html)
+
+[Moving average in SQLite](https://stackoverflow.com/questions/48488234/moving-average-in-sqlite?rq=1)
+
+[SQLite moving average](https://stackoverflow.com/questions/40698559/sqlite-moving-average)

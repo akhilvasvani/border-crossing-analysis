@@ -28,7 +28,7 @@ def parse_args():
 def main():
     """ Main function that takes in the input file of border crossing entry data and returns the desired statistics. """
 
-    # Input and Output files from the shell script
+    # Input and Output files Error-Handling
     args = parse_args()
     if args.input is None:
         raise ImportError('Did not specify the correct input file!')

@@ -1,5 +1,6 @@
 # Packages to import
 import math
+import pandas as pd
 
 
 def my_round(i):
@@ -96,7 +97,7 @@ def check_all_there(the_list):
     for row in the_list:
 
         # For each index in the row
-        for i in range(len(row)):
+        for i, item in enumerate(row):
 
             # If the row is empty, raise error
             if not row[i]:
@@ -166,3 +167,31 @@ def calculate_average_crossing_per_month_and_measure(num_of_months, list_with_ag
             list_with_avg.append(each_row)
 
     return list_with_avg
+
+
+def convert_date_to_sql(filename):
+    """ Converts the date to the SQLite Datetime format"""
+
+    # Read in the date
+    df = pd.read_csv(filename, sep=',')
+
+    # Because SQLite is particular about the Datetime format, I have to switch the format
+    df['Date'] = pd.to_datetime (df.Date)
+    df['Date'] = df['Date'].dt.strftime ('%Y-%m-%d %H:%M:%S %p')
+
+    return df
+
+
+def convert_date_back_to_original_format(filename):
+    """ Converts Date back to the original format"""
+
+    # '/home/akhil/border-crossing-analysis/output/report_SQL_test_small.csv'
+
+    df = pd.read_csv(filename, sep=',')
+
+    # Because SQLite is particular about the Datetime format, I have to switch the format
+    df['Date'] = pd.to_datetime (df.Date)
+    df['Date'] = df['Date'].dt.strftime('%m/%d/%Y %H:%M:%S %p')
+    df.to_csv(path_or_buf=filename, index=False)
+
+
