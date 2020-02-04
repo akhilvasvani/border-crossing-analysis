@@ -1,29 +1,55 @@
+"""Script contain helper functions for border crossing analysis. """
+
 # Packages to import
 import math
 import pandas as pd
-import copy
+import pathlib
+import errno
+import csv
+import os
+import argparse
+
+from operator import itemgetter
+from datetime import datetime
+from itertools import chain
 
 
-def my_round(i):
-    """ Helper function for rounding.
+def my_round(my_number):
+    """Rounds a number based on the rule: if a number is 4 or less
+        then round down, otherwise round up.
 
-    Keyword:
-    (float) i : number to be inputted
+    Args:
+        my_number: the float number as input
 
     Returns:
-    (int) f: number rounded up or down based on mathematical rounding rules
+        f: an integer rounded up or down based on the round rule.
     """
-    f = math.floor(i)
-    return f if i - f < 0.5 else f+1
+    f = math.floor(my_number)
+    return f if my_number - f < 0.5 else f+1
+
+
+def parse_args():
+    """Parses arguments passed in the shell to be used in the main function.
+
+    Returns:
+        args -- arguments
+    """
+    parser = argparse.ArgumentParser(description='Look for Border Crossing Statistics')
+    parser.add_argument('--input', help="enter the input filename", type=str)
+    parser.add_argument('--output', help="enter the output filename", type=str)
+    args = parser.parse_args()
+    return args
+
+
+"""Functions used for Original (Brute Force) Script"""
 
 
 def output_list(master_list):
-    """
-    Helper function that removes the extra brackets when outputting a list of lists into a csv file.
-    Stackoverflow link: https://stackoverflow.com/questions/31587784/python-list-write-to-csv-without-the-square-brackets
+    """Removes the extra brackets when outputting a list of lists
+       into a csv file.
 
-    Keywords:
-    masterList (list): input list of lists
+    Args:
+        masterList: input list of lists
 
     Returns:
     list: output list
@@ -48,13 +74,13 @@ def output_list(master_list):
 
 
 def count_the_months(another_list):
+    """Counts the number of months.
 
-    """ Helper function designed to count the number of months.
+    Args:
+        another_list: input list of all the dates (some are repeating)
 
-    Keywords:
-    (list) another_list: input list of all the dates (some are repeating)
-
-    Returns: length of set of dates or dictionary if dates per each measure are different
+    Return:
+        length of set of dates or dictionary if dates per each measure are different
     """
 
     # Create a dates set and a measure dictionary
@@ -85,7 +111,8 @@ def count_the_months(another_list):
 
 
 def check_all_there(the_list):
-    """ Helper function to make sure all of the elements are there.
+    """Checks if all of the elements are not None or
+       if there is an empty list.
 
     Keywords:
     (list) the_list: input list of everything
@@ -108,15 +135,19 @@ def check_all_there(the_list):
 
 
 def calculate_average_crossing_per_month_and_measure(num_of_months, list_with_agg_values):
-    """ Helper function used to calculate the average crossings per month and per measure.
+    """Calculates the average crossings per month and per measure.
 
-    Keywords:
-    num_of_months (dict or list): the number of months based on the frequency of each measure
+    Args:
+        num_of_months: the number of months based on the
+                       frequency of each measure, saved as
+                       a dict or a list.
 
-    list_with_agg_values (list): the list with Border, Date, Measure, and aggregated values
+        list_with_agg_values: the list with Border, Date, Measure,
+                              and aggregated values.
 
     Returns:
-    list_with_avg (list): the list with the average crossing values per month and per measure
+        list_with_avg (list): the list with the average crossing values
+                              per month and per measure
     """
 
     list_with_avg = []
@@ -170,13 +201,55 @@ def calculate_average_crossing_per_month_and_measure(num_of_months, list_with_ag
     return list_with_avg
 
 
+def write_to_csv(name_of_output_file, final_list):
+    """ Writes the file out to csv file row by row.
+
+    Args:
+        name_of_output_file: name of the output file
+        final_list: the list which holds all the border data information
+
+    Raises:
+        OSError: If the file does in fact exist
+        FileNotFoundError: If the file is not found
+    """
+
+    try:
+        filepath = name_of_output_file
+    except OSError:
+        if pathlib.Path(name_of_output_file).resolve(strict=True):
+            pass
+        else:
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT),
+                                    name_of_output_file)
+
+    # Write out to the output csv file
+    with open(filepath, mode='w') as csv_outfile:
+        outfile_writer = csv.writer(csv_outfile, delimiter=',', quotechar='"',
+                                    quoting=csv.QUOTE_NONE)
+
+        # Column headers--Don't quote them
+        outfile_writer.writerow(['Border', 'Date', 'Measure', 'Value', 'Average'])
+
+        outfile_writer = csv.writer(csv_outfile, delimiter=',', quotechar='"',
+                                    quoting=csv.QUOTE_MINIMAL)
+
+        # for each row in the final list, remove the list of list
+        # and create one list
+        for row in final_list:
+            outfile_writer.writerow(row)
+
+
+"""Functions used for SQL Script"""
+
+
 def convert_date_to_sql(filename):
     """ Converts the date to the SQLite Datetime format"""
 
     # Read in the date
     df = pd.read_csv(filename, sep=',')
 
-    # Because SQLite is particular about the Datetime format, I have to switch the format
+    # Because SQLite is particular about the Datetime format,
+    # I have to switch the format
     df['Date'] = pd.to_datetime(df.Date)
     df['Date'] = df['Date'].dt.strftime('%Y-%m-%d %I:%M:%S %p')
 
@@ -186,14 +259,16 @@ def convert_date_to_sql(filename):
 def convert_date_back_to_original_format(filename):
     """ Converts Date back to the original format"""
 
-    # '/home/akhil/border-crossing-analysis/output/report_SQL_test_small.csv'
-
     df = pd.read_csv(filename, sep=',')
 
-    # Because SQLite is particular about the Datetime format, I have to switch back to the original format
+    # Because SQLite is particular about the Datetime format,
+    # I have to switch back to the original format
     df['Date'] = pd.to_datetime(df.Date)
     df['Date'] = df['Date'].dt.strftime('%m/%d/%Y %I:%M:%S %p')
     df.to_csv(path_or_buf=filename, index=False)
+
+
+"""Functions {and Class} used for Optimized Script"""
 
 
 class NestedDict(dict):
@@ -453,3 +528,141 @@ def _validate_path(path):
         raise TypeError('path argument have to be a list')
     if not path:
         raise Exception('path argument have to be a nonempty list')
+
+
+def sum_values(measure_value):
+    """Sums all the measure values
+
+    Args:
+        measure_value: Dictionary which holds the Date and Time as a key,
+                       and the value the current number of crossings and 0
+    Returns:
+        the sum of all the measure values for that dictionary
+    """
+    for key, value in measure_value.items():
+        measure_value[key] = sum(value)
+
+    return measure_value
+
+
+def cumulative_average(values_list):
+    """" Gathers the cumulative average for each measure.
+         So if the values list has more than one value,
+         then there will be two numbers, the total sum at
+         that step as well as the cumulative average.
+
+    Args:
+        values_list: list of values of the specific measure
+
+    Return:
+        list: if there are not multiple values, then return
+              the singular value and 0, otherwise return
+              the value at each step of the cumulative average.
+    """
+
+    if len(values_list) == 1:
+        for value in values_list:
+            return [tuple((value, 0))]
+
+    new_list = [0] * len(values_list)
+
+    new_p, counter = 0, 0
+    for i in range(len(values_list)-1, -1, -1):
+        new_list[i] = new_p
+        new_p += values_list[i]
+
+        if counter >= 1:
+            new_list[i] = my_round(new_list[i]/counter)
+
+        counter += 1
+
+    return list(zip(values_list, new_list))
+
+
+def find_the_bloody_key(total_list, result_key, measure_key, measure_values):
+    """From the list of all the measure values, gets the values at each step.
+       For instance, at step 0, Cars passing in Canada-US border is 6,800. At
+       step 1, Cars passing in Canada-US border is 7,000--so the average is 14,800.
+
+       Args:
+           total_list: list of all measure values (number, and cumulative average)
+           result_key: name of border
+           measure_key: date and time entry
+           measure_values: value of measure
+
+       Returns:
+            new_total_list: list of everything
+                            (<Border>, <Date>, <Measure>, <Value>, <Average>)
+                            nicely put together
+
+        Raises:
+            IndexError: if total_list is emtpy
+            ValueError: if total list has less than one pair of measure value and
+                        cumulative sum.
+       """
+
+    if not total_list:
+        raise IndexError("Error! The list of cumulative average is empty.")
+
+    new_total_list = []
+    i = 0
+    for key in measure_values.keys():
+
+        # If the list has 1 value!
+        if len(list(chain(*total_list))) == 2 and total_list[0][0] in measure_values.values():
+
+            # saves in this order: <Border>, <Date>, <Measure>, <Value>, <Average>
+            return [result_key, key, measure_key, total_list[0][0], total_list[0][1]]
+
+        # if the list has more than 1 value
+        elif len(list(chain(*total_list))) > 2:
+            if total_list[i][0] in measure_values.values() and i < len(list(chain(*total_list))):
+                new_total_list.append([result_key, key, measure_key, total_list[i][0], total_list[i][1]])
+                i += 1
+
+        else:
+            raise ValueError("Error: total_list does not has less than one pair of values.")
+
+    return new_total_list
+
+
+def find_average(result):
+    """Iterate through the various keys and values,
+       until we find the specific one of interest. Find the cumulative average.
+       Place that in the final list, and sort it by the Date, Value, Measure, and
+       Border.
+
+       Args:
+           result: list of all the data
+
+        Returns:
+            final_sorted_list: list of sorted items
+
+    """
+
+    all_list = []
+
+    for result_key, result_value in result.items():
+        for measure_key, measure_value in result_value.items():
+
+            measure_values = sum_values(measure_value)
+
+            new_table = [v for v in (measure_values.values())]
+            total_list = cumulative_average(new_table)
+
+            row = find_the_bloody_key(total_list, result_key, measure_key, measure_values)
+
+            if len(row) == 5:
+                all_list.append(row)
+            else:
+                all_list += row
+
+    # Sort the list by Date, Value, Measure, Border in descending order
+    sorted_list_with_val_border_measure = sorted(all_list, key=itemgetter(3, 2, 0),
+                                                 reverse=True)
+    final_sorted_list = sorted(sorted_list_with_val_border_measure,
+                               key=lambda x: datetime.strptime(x[1],
+                                                               '%d/%m/%Y %H:%M:%S %p'),
+                               reverse=True)
+
+    return final_sorted_list

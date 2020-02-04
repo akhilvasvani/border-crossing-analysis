@@ -13,6 +13,8 @@ The Bureau of Transportation Statistics regularly makes available data on the nu
 
 **For this challenge, I will calculate the total number of times vehicles, equipment, passengers and pedestrians cross the U.S.-Canadian and U.S.-Mexican borders each month. In addition, I will find the running monthly average of total number of crossings for that type of crossing and border from the input dataset provided to me.**
 
+[Insight Data Science Border Crossing Analysis Challenge](https://github.com/InsightDataScience/border-crossing-analysis)
+
 ## Language and Libraries Used
 I used Python3 as my coding language to solve this problem. Sticking to the problem statement, I avoided the use of any pip installed libraries on Python and opted for the default included libraries. I used:
 
@@ -39,7 +41,9 @@ Hence, I arrived at my solution. I read in the csv file, and I sorted it (in a d
 
 Fun things I learned: iterating over Lists of Lists is (slightly) faster than iterating over a list of OrderedDictionaries! Itemgetter is faster than using a lambda function.
 
-Moved all the helper function to the utils.py file in order to make things for clear and legible. 
+Moved all the helper function to the utils.py file in order to make things for clear and legible.
+
+In addition, I created an optimized version of the script. It runs slightly faster than the first version. 
 
 
 ### Pros and Cons
@@ -49,19 +53,22 @@ Pros of my methodology:
 * If instead of aggregating the valves of the crossings and you wanted to aggregate via the date, it's easy to implement and not much to change
 
 Cons:
-* Unfortunately because I sorted the list (the data read in the csv_file), my time complexity became O(n log(n)), which is both the best and worst case. And at one time I have two nested for-loops, so my overall time complexity for my main function is O(n^{2} + n log(n)) = O(n^{2}), which if scaled up to a LOT more elements would take too long. Although I tried to implement other data structures to prevent this from happening, I could not get them working. Hence, I opted to have something working than nothing at all. In order to avoid this for future iterations, I would use the Pandas libraries, which would avoid the need for sorting (though we would still need to use the groupby function which I think is O(n) time complexity). My space complexity was simply O(n). 
+* Unfortunately because I sorted the list (the data read in the csv_file), my time complexity became O(n log(n)), which is both the best and worst case. And at one time I have two nested for-loops, so my overall time complexity for my main function is O(n^{2} + n log(n)) = O(n^{2}), which if scaled up to a LOT more elements would take too long. Although I tried to implement other data structures to prevent this from happening, I could not get them working. Hence, I opted to have something working than nothing at all. In order to avoid this for future iterations, I would use the Pandas libraries, which would avoid the need for sorting (though we would still need to use the groupby function which I think is O(n) time complexity). My space complexity was simply O(n).
+* Although, my optimized version speeds up the main function from O(n^{2}) --> O(nlog(n)), the space cost stays the same O(n). 
 
 ### How to run my work?
 
 So the first step, is to run the ```run.sh``` bash file, which will call my border_crossing_statistics.py script. However, I have added in extra parameters:
 
-YOU MUST SPECIFY THE INPUT AND OUTPUT FILE AS WELL AS THE ARGUMENTS THEMSELVES. I REPEAT SPECIFY THE INPUT AND OUTPUT. For example,
+YOU MUST SPECIFY THE INPUT AND OUTPUT FILE AS WELL AS THE ARGUMENTS THEMSELVES. I REPEAT SPECIFY THE INPUT AND OUTPUT. 
 
-this will work: ```python3 src/border_crossing_statistics.py --input input/Border_Crossing_Entry_Data.csv --output output/report.csv```
+For example, this will work: ```python3 src/border_crossing_statistics.py --input input/Border_Crossing_Entry_Data.csv --output output/report.csv```
 
 This will not work: ```python3 ./src/border_analytics.py ./input/Border_Crossing_Entry_data.csv ./output/report.csv```
 
 I did this because there is now a clear distinction between input and output.
+
+For optimized version: ```python3 src/border_crossing_statistics_optimized.py --input input/Border_Crossing_Entry_Data.csv --output output/report.csv```
 
 Added in my own unit test cases to help debug and ran the test case provided!
 
@@ -70,6 +77,8 @@ Added in my own unit test cases to help debug and ran the test case provided!
 Last, but not least, are the references whose helpful and thoughtful resources I read to help me solve this problem. While I did not use all of them, some were essential. Without them, I would not have been able to get this far so without further ado: 
 
 ### Python Links
+
+[List of lists vs dictionary](https://stackoverflow.com/questions/15990456/list-of-lists-vs-dictionary)
 
 [Reading and Writing CSV Files in Python](https://realpython.com/python-csv/)
 
@@ -93,8 +102,6 @@ Last, but not least, are the references whose helpful and thoughtful resources I
 
 [In the Python dictionary, can 1 key hold more than 1 value?](https://www.quora.com/In-the-Python-dictionary-can-1-key-hold-more-than-1-value)
 
-[https://www.quora.com/In-the-Python-dictionary-can-1-key-hold-more-than-1-value](https://www.quora.com/In-the-Python-dictionary-can-1-key-hold-more-than-1-value)
-
 [Python creating a dictionary of lists](https://stackoverflow.com/questions/960733/python-creating-a-dictionary-of-lists)
 
 [How to iterate through a list and sum members together](https://stackoverflow.com/questions/25149609/how-to-iterate-through-a-list-and-sum-members-together)
@@ -104,6 +111,8 @@ Last, but not least, are the references whose helpful and thoughtful resources I
 [compute mean in python for a generator](https://stackoverflow.com/questions/4963784/compute-mean-in-python-for-a-generator)
 
 [Python - Itemgetter on Dates](https://stackoverflow.com/questions/21634678/python-itemgetter-on-dates)
+
+[Python list write to CSV without the square brackets](https://stackoverflow.com/questions/31587784/python-list-write-to-csv-without-the-square-brackets)
 
 [Python3: test if all values of a dictionary are equal - when value is unknown](https://stackoverflow.com/questions/45020701/python3-test-if-all-values-of-a-dictionary-are-equal-when-value-is-unknown?rq=1)
 
